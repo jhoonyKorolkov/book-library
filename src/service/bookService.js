@@ -65,7 +65,12 @@ const deleteBook = async id => {
 
 const downloadBookById = id => {
   const book = books.find(book => book.id === id)
+  if (book === undefined) {
+    throw new Error('book is not found')
+  }
+
   const filePath = path.resolve('uploads', book.fileBook)
+  return filePath
 }
 
 export {

@@ -73,10 +73,11 @@ const deleteBook = (req, res) => {
   }
 }
 
-const downloadBookById = async (req, res) => {
+const downloadBookById = (req, res) => {
   try {
     const { id } = req.params
-    await downloadBookByIdService(id)
+    const file = downloadBookByIdService(id)
+    res.download(file)
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
