@@ -3,7 +3,8 @@ import {
   getBookById as getBookByIdService,
   createBook as createBookService,
   updateBook as updateBookInService,
-  deleteBook as deleteBookInService
+  deleteBook as deleteBookInService,
+  downloadBookById as downloadBookByIdService
 } from '../service/bookService.js'
 
 const getAllBooks = (req, res) => {
@@ -51,8 +52,6 @@ const updateBook = async (req, res) => {
       return
     }
 
-    console.log(updatedBook)
-
     res.json(updatedBook)
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -74,4 +73,20 @@ const deleteBook = (req, res) => {
   }
 }
 
-export { getAllBooks, getBookById, createBook, updateBook, deleteBook }
+const downloadBookById = async (req, res) => {
+  try {
+    const { id } = req.params
+    await downloadBookByIdService(id)
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+export {
+  getAllBooks,
+  getBookById,
+  createBook,
+  updateBook,
+  deleteBook,
+  downloadBookById
+}

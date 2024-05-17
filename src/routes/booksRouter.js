@@ -6,13 +6,15 @@ import {
   getBookById,
   createBook,
   updateBook,
-  deleteBook
+  deleteBook,
+  downloadBookById
 } from '../controllers/booksControllers.js'
 
 const booksRouter = express.Router()
 
 booksRouter.get('/books', getAllBooks)
 booksRouter.get('/books/:id', getBookById)
+booksRouter.get('/books/:id/download', downloadBookById)
 booksRouter.post('/books', upload.single('document'), createBook)
 booksRouter.put('/books/:id', upload.single('document'), updateBook)
 booksRouter.delete('/books/:id', deleteBook)

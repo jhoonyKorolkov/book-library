@@ -62,4 +62,17 @@ const deleteBook = async id => {
   books.splice(idx, 1)
   return true
 }
-export { getAllBooks, getBookById, createBook, updateBook, deleteBook }
+
+const downloadBookById = id => {
+  const book = books.find(book => book.id === id)
+  const filePath = path.resolve('uploads', book.fileBook)
+}
+
+export {
+  getAllBooks,
+  getBookById,
+  createBook,
+  updateBook,
+  deleteBook,
+  downloadBookById
+}
