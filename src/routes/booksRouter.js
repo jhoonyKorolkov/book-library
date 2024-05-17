@@ -1,8 +1,10 @@
 import express from 'express'
+import upload from '../middlewares/uploadMiddleware.js'
+
 import {
   getAllBooks,
-  getTargetBook,
-  setNewBook,
+  getBookById,
+  createBook,
   updateBook,
   deleteBook
 } from '../controllers/booksControllers.js'
@@ -10,9 +12,9 @@ import {
 const booksRouter = express.Router()
 
 booksRouter.get('/books', getAllBooks)
-booksRouter.get('/books/:id', getTargetBook)
-booksRouter.post('/books', setNewBook)
-booksRouter.put('/books/:id', updateBook)
+booksRouter.get('/books/:id', getBookById)
+booksRouter.post('/books', upload.single('document'), createBook)
+booksRouter.put('/books/:id', upload.single('document'), updateBook)
 booksRouter.delete('/books/:id', deleteBook)
 
 export { booksRouter }

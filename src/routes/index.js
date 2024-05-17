@@ -1,6 +1,6 @@
 import express from 'express'
-import { authRouter } from './auth.js'
-import { booksRouter } from './books.js'
+import { authRouter } from './authRouter.js'
+import { booksRouter } from './booksRouter.js'
 
 const router = express.Router()
 
