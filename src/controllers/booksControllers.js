@@ -1,18 +1,35 @@
+import { errorHandler } from '../middlewares/errorMiddleware.js'
 import {
   getAllBooks as getAllBooksFromService,
   getBookById as getBookByIdService,
   createBook as createBookService,
-  updateBook as updateBookInService,
-  deleteBook as deleteBookInService,
-  downloadBookById as downloadBookByIdService
+  updateBook as updateBookInService
 } from '../service/bookService.js'
 
 const getAllBooks = (req, res) => {
   try {
     const books = getAllBooksFromService()
-    res.json(books)
+    res.render('index', { books })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    errorHandler(error, req, res)
+  }
+}
+
+const getCreatFormBook = (req, res) => {
+  try {
+    res.render('create')
+  } catch (error) {
+    errorHandler(error, req, res)
+  }
+}
+
+const getUpdateFormBook = async (req, res) => {
+  try {
+    const { id } = req.params
+    const book = getBookByIdService(id)
+    res.render('edit', { book })
+  } catch (error) {
+    errorHandler(error, req, res)
   }
 }
 
@@ -20,66 +37,28 @@ const getBookById = (req, res) => {
   try {
     const { id } = req.params
     const book = getBookByIdService(id)
-
-    if (!book) {
-      res.status(404).send('not found')
-      return
-    }
-    res.json(book)
+    res.render('view', { book })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    errorHandler(error, req, res)
   }
 }
 
-const createBook = async (req, res) => {
+const createBook = (req, res) => {
   try {
-    const file = req.file
-    const newBook = await createBookService(req.body, file)
-    res.status(201).json(newBook)
+    createBookService(req.body)
+    res.redirect('/')
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    errorHandler(error, req, res)
   }
 }
 
-const updateBook = async (req, res) => {
-  try {
-    const file = req.file
-    const { id } = req.params
-    const updatedBook = await updateBookInService(id, req.body, file)
-
-    if (!updatedBook) {
-      res.status(404).send('not found')
-      return
-    }
-
-    res.json(updatedBook)
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-}
-
-const deleteBook = (req, res) => {
-  try {
-    const deleted = deleteBookInService(req.params.id)
-
-    if (!deleted) {
-      res.status(404).send('not found')
-      return
-    }
-
-    res.send('ok')
-  } catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-}
-
-const downloadBookById = (req, res) => {
+const updateBook = (req, res) => {
   try {
     const { id } = req.params
-    const file = downloadBookByIdService(id)
-    res.download(file)
+    updateBookInService(id, req.body)
+    res.redirect(`/books/${id}`)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    errorHandler(error, req, res)
   }
 }
 
@@ -88,6 +67,6 @@ export {
   getBookById,
   createBook,
   updateBook,
-  deleteBook,
-  downloadBookById
+  getUpdateFormBook,
+  getCreatFormBook
 }

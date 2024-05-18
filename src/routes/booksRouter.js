@@ -1,22 +1,21 @@
 import express from 'express'
-import upload from '../middlewares/uploadMiddleware.js'
 
 import {
   getAllBooks,
+  getCreatFormBook,
   getBookById,
   createBook,
   updateBook,
-  deleteBook,
-  downloadBookById
+  getUpdateFormBook,
 } from '../controllers/booksControllers.js'
 
 const booksRouter = express.Router()
 
-booksRouter.get('/books', getAllBooks)
+booksRouter.get('/', getAllBooks)
+booksRouter.get('/books/create', getCreatFormBook)
+booksRouter.post('/books/create', createBook)
 booksRouter.get('/books/:id', getBookById)
-booksRouter.get('/books/:id/download', downloadBookById)
-booksRouter.post('/books', upload.single('document'), createBook)
-booksRouter.put('/books/:id', upload.single('document'), updateBook)
-booksRouter.delete('/books/:id', deleteBook)
+booksRouter.get('/books/edit/:id', getUpdateFormBook)
+booksRouter.post('/books/edit/:id', updateBook)
 
 export { booksRouter }
