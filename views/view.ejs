@@ -1,0 +1,10 @@
+<%- include('main/header', { title: 'Book List' }) %>
+
+<h1><%= book.title %></h1>
+<p>Author: <%= book.author %></p>
+<p>Description: <%= book.description %></p>
+<a class="btn btn-secondary" href="/books/edit/<%= book.id %>">Edit</a>
+<a class="btn btn-secondary" href="/">Back to list</a>
+
+
+<%- include('main/footer') %>

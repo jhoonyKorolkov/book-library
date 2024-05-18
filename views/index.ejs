@@ -1,0 +1,13 @@
+<%- include('main/header', { title: 'Book List' }) %>
+
+<h1>Book List</h1>
+<ul class="list-group">
+  <% books.forEach(book => { %>
+    <li class="list-group-item">
+      <a href="/books/<%= book.id %>"><%= book.title %></a>
+    </li>
+  <% }) %>
+</ul>
+<a class="btn btn-primary" href="/books/create">Add a new book</a>
+
+<%- include('main/footer') %>
