@@ -5,8 +5,8 @@ import { notFoundHandler, errorHandler } from './middlewares/errorMiddleware.js'
 import bodyParser from 'body-parser'
 
 const app = express()
-
 app.set('view engine', 'ejs')
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(router)
