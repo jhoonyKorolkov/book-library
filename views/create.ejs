@@ -1,21 +1,36 @@
 <%- include('main/header', { title: 'Book List' }) %>
 
-  <h1>Add a new book</h1>
-  <form action="/books/create" method="post">
-    <div class="form-group">
-      <label for="title">Title:</label>
-      <input type="text" class="form-control" id="title" name="title" required />
-    </div>
-    <div class="form-group">
-      <label for="author">Author:</label>
-      <input type="text" class="form-control" id="author" name="author" required />
-    </div>
-    <div class="form-group">
-      <label for="description">Description:</label>
-      <textarea class="form-control" id="description" name="description" requiredx></textarea>
-    </div>
-    <button type="submit" class="btn btn-primary">Add Book</button>
-  </form>
-  <a class="btn btn-secondary" href="/">Back to list</a>
+<h1>Add a new book</h1>
+<form action="/books/create" method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="title">Title:</label>
+    <input type="text" class="form-control" id="title" name="title" required />
+  </div>
+  <div class="form-group">
+    <label for="author">Author:</label>
+    <input
+      type="text"
+      class="form-control"
+      id="author"
+      name="author"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="description">Description:</label>
+    <textarea
+      class="form-control"
+      id="description"
+      name="description"
+      requiredx
+    ></textarea>
+  </div>
+  <div class="form-group">
+    <label for="description">Load image:</label>
+    <input type="file" name="file" id="file" />
+  </div>
+  <button type="submit" class="btn btn-primary">Add Book</button>
+</form>
+<a class="btn btn-secondary" href="/">Back to list</a>
 
-  <%- include('main/footer') %>
+<%- include('main/footer') %>
