@@ -45,7 +45,6 @@ const getBookById = (req, res) => {
 
 const createBook = (req, res) => {
   try {
-    console.log(req)
     createBookService(req.body)
     res.redirect('/')
   } catch (error) {
