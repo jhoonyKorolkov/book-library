@@ -3,26 +3,27 @@ import books from '../models/booksModel.js'
 import uniqid from 'uniqid'
 import path from 'path'
 import { unlink } from 'fs/promises'
+import { BASE_URL } from '../config.js'
 
 const getAllBooks = () => {
   return books
 }
 
 const getBookById = id => {
-  try {
-    const book = books.find(book => book.id === id)
-    return book
-  } catch (error) {
+  const book = books.find(book => book.id === id)
+  if (!book) {
     throw new AppError('Book not found', 404)
   }
+  return book
 }
 
 const createBook = (bookData, file) => {
   const newBook = {
     ...bookData,
     id: uniqid(),
+    fileName: file.filename,
+    fullPath: `${BASE_URL}/img/${file.filename}`,
     path: file.path,
-    fileBook: file.filename,
     originalName: file.originalname
   }
 
@@ -39,15 +40,19 @@ const updateBook = async (id, updatedData, file) => {
 
   const book = books[idx]
 
+  console.log(book)
+
   try {
     if (file && book.id === id) {
-      console.log(book)
-      const filePath = path.resolve('public', book.fileBook)
+      const filePath = path.resolve('public/img', book.fileName)
       await unlink(filePath)
+
+      console.log(filePath)
       books[idx] = {
         ...books[idx],
         ...updatedData,
-        fileBook: file.filename,
+        fileName: file.filename,
+        fullPath: `${BASE_URL}/img/${file.filename}`,
         path: file.path,
         originalName: file.originalname
       }
@@ -64,20 +69,26 @@ const updateBook = async (id, updatedData, file) => {
 const deleteBook = async id => {
   const idx = books.findIndex(book => book.id === id)
 
-  if (idx === -1) {
-    throw new AppError('Book not found', 404)
-  }
-
   const book = books[idx]
 
-  const filePath = path.resolve('public', book.fileBook)
+  if (!book.fileName) {
+    throw new AppError('Book file not found', 404)
+  }
 
+  const filePath = path.resolve('public/img', book.fileName)
   try {
     await unlink(filePath)
     console.log(`Successfully deleted ${filePath}`)
   } catch (error) {
-    throw new AppError('Internal Server Error', 500)
+    if (error.code === 'ENOENT') {
+      console.error(`File not found: ${filePath}`)
+      throw new AppError('File not found', 404)
+    } else {
+      console.error(`Error deleting file: ${error.message}`)
+      throw new AppError('Internal Server Error', 500)
+    }
   }
+
   books.splice(idx, 1)
 }
 

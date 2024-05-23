@@ -2,12 +2,12 @@
   "name": "books-library",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "start": "pm2 start index.js"
+    "dev": "nodemon app.js",
+    "start": "pm2 start app.js"
   },
   "keywords": [],
   "author": "",

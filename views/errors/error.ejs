@@ -1,12 +1,12 @@
 <%- include('../main/header', { title: 'Book List' }) %>
 
-<div class="text-center">
-  <h1>Error</h1>
-  <p><%= message %></p>
-  <% if (stack) { %>
-    <pre><%= stack %></pre>
-  <% } %>
-  <a class="btn btn-primary" href="/books">Go to Home</a>
-</div>
+  <div class="text-center">
+    <h1>Error: <%= title %>
+    </h1>
+    <p>
+      <%= message %>
+    </p>
+    <a class="btn btn-primary" href="/">Go to Home</a>
+  </div>
 
-<%- include('../main/footer') %>
+  <%- include('../main/footer') %>

@@ -1,13 +1,53 @@
 <%- include('main/header', { title: 'Book List' }) %>
 
-<h1>Book List</h1>
-<ul class="list-group">
-  <% books.forEach(book => { %>
-    <li class="list-group-item">
-      <a href="/books/<%= book.id %>"><%= book.title %></a>
-    </li>
-  <% }) %>
-</ul>
-<a class="btn btn-primary" href="/books/create">Add a new book</a>
+  <style>
+    .book-list-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 0.25rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-<%- include('main/footer') %>
+    .book-list-container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .list-group-item {
+      transition: background-color 0.3s;
+    }
+
+    .list-group-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+
+  <div class="container mt-5 book-list-container">
+    <h1>Book List</h1>
+    <% if (books.length) { %>
+      <ul class="list-group">
+        <% books.forEach(book=> { %>
+          <a href="/books/<%= book.id %>" class="list-group-item">
+            <%= book.title %>
+          </a>
+          <% }) %>
+      </ul>
+      <div class="btn-container">
+        <a class="btn btn-primary" href="/books/create">Add a new book</a>
+      </div>
+      <% } else { %>
+        <p class="text-center">No books available. Please add a new book.</p>
+        <div class="btn-container">
+          <a class="btn btn-primary" href="/books/create">Add a new book</a>
+        </div>
+        <% } %>
+  </div>
+
+  <%- include('main/footer') %>

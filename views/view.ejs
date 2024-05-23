@@ -1,36 +1,61 @@
 <%- include('main/header', { title: 'Book List' }) %>
 
-<div class="container mt-5">
-  <div class="card">
-    <div class="card-header">
-      <h1><%= book.title %></h1>
-    </div>
-    <div class="card-body">
-      <p class="card-text"><strong>Author:</strong> <%= book.author %></p>
-      <p class="card-text">
-        <strong>Description:</strong> <%= book.description %>
-      </p>
-      <div class="btn-group" role="group" aria-label="Book Actions">
-        <a class="btn btn-primary" href="/books/<%= book.id %>/download"
-          >Download file</a
-        >
-        <a class="btn btn-secondary" href="/books/edit/<%= book.id %>">Edit</a>
-        <form
-          action="/books/<%= book.id %>?_method=DELETE"
-          method="POST"
-          style="display: inline"
-        >
-          <a
-            class="btn btn-danger"
-            href="/books/delete/<%= book.id %>"
-            onclick="return confirm('Are you sure you want to delete this book?');"
-            >Delete</a
-          >
-        </form>
-        <a class="btn btn-secondary" href="/">Back to list</a>
+  <style>
+    .card-custom {
+      border: 1px solid #dee2e6;
+      border-radius: 0.25rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header-custom {
+      background-color: #343a40;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    .card-body-custom {
+      padding: 20px;
+    }
+
+    .btn-group-custom .btn {
+      margin: 0 5px;
+    }
+
+    .card img {
+      display: block;
+      margin: 20px 0;
+      max-width: 350px;
+      height: auto;
+    }
+  </style>
+
+  <div class="container mt-5">
+    <div class="card card-custom">
+      <div class="card-header card-header-custom">
+        <h1>
+          <%= book.title %>
+        </h1>
+      </div>
+      <div class="card-body card-body-custom">
+        <p class="card-text"><strong>Author:</strong>
+          <%= book.author %>
+        </p>
+        <p class="card-text">
+          <strong>Description:</strong>
+          <%= book.description %>
+        </p>
+        <img src="<%= book.fullPath %>" alt="<%= book.title %>">
+        <div class="btn-group btn-group-custom" role="group" aria-label="Book Actions">
+          <a class="btn btn-primary" href="/books/<%= book.id %>/download">Download file</a>
+          <a class="btn btn-warning" href="/books/edit/<%= book.id %>">Edit</a>
+          <form action="/books/<%= book.id %>?_method=DELETE" method="POST" style="display: inline">
+            <a class="btn btn-danger" href="/books/delete/<%= book.id %>"
+              onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
+          </form>
+          <a class="btn btn-secondary" href="/">Back to list</a>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<%- include('main/footer') %>
+  <%- include('main/footer') %>

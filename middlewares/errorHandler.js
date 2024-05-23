@@ -6,16 +6,23 @@ const notFoundHandler = (req, res, next) => {
   next(err)
 }
 
-// Основной обработчик ошибок
 const errorHandler = (err, req, res, next) => {
-  err.statusCode = err.statusCode || 500
-  err.status = err.status || 'error'
+  const statusCode = err.statusCode || 500
+  const message = err.message || 'Internal Server Error'
 
-  res.status(err.statusCode).render('errors/404', {
-    title: 'Something went wrong!',
-    message: err.message,
-    stack: err.stack
+  console.error(`ERROR 💥: ${message}`, { stack: err.stack })
+
+  if (statusCode === 404) {
+    return res.status(404).render('errors/404', {
+      title: 'Page Not Found',
+      message: message
+    })
+  }
+
+  res.status(statusCode).render('errors/error', {
+    title:
+      statusCode === 500 ? 'Internal Server Error' : 'Something went wrong!',
+    message: message
   })
 }
-
 export { notFoundHandler, errorHandler }
