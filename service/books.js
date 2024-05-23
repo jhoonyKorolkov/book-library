@@ -1,5 +1,5 @@
 import AppError from '../middlewares/AppError.js'
-import books from '../models/booksModel.js'
+import books from '../models/books.js'
 import uniqid from 'uniqid'
 import path from 'path'
 import { unlink } from 'fs/promises'
