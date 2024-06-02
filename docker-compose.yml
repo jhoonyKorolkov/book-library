@@ -1,0 +1,33 @@
+services:
+  books:
+    build: ./books-library
+    restart: 'always'
+    ports:
+      - '3002:3002'
+    volumes:
+      - /app/node_modules
+      - ./books-library:/app
+    environment:
+      - PORT=3002
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+  counter:
+    build: ./counter
+    restart: 'always'
+    ports:
+      - '4002:4002'
+    volumes:
+      - /app/node_modules
+      - ./counter:/app
+    environment:
+      - PORT=4002
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+  redis:
+    image: redis
+    restart: 'always'
+    volumes:
+      - ./data:/data
+

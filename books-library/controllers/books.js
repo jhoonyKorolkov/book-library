@@ -1,3 +1,4 @@
+import client from '../models/redis.js'
 import {
   getAllBooks as getAllBooksFromService,
   getBookById as getBookByIdService,
@@ -34,11 +35,13 @@ const getUpdateFormBook = async (req, res, next) => {
   }
 }
 
-const getBookById = (req, res, next) => {
+const getBookById = async (req, res, next) => {
   try {
     const { id } = req.params
+
     const book = getBookByIdService(id)
-    res.render('view', { book })
+    const count = await client.get(id)
+    res.render('view', { book:book, count:count})
   } catch (error) {
     next(error)
   }
