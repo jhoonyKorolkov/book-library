@@ -4,82 +4,73 @@ import {
   createBook as createBookService,
   updateBook as updateBookInService,
   deleteBook as deleteBookInService,
-  downloadBookById as downloadBookByIdService
+  downloadBook as downloadBookByIdService
 } from '../service/bookService.js'
 
-const getAllBooks = (req, res) => {
+const getAllBooks = async (req, res, next) => {
   try {
-    const books = getAllBooksFromService()
+    const books = await getAllBooksFromService()
+
     res.json(books)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-const getBookById = (req, res) => {
+const getBookById = async (req, res) => {
   try {
     const { id } = req.params
-    const book = getBookByIdService(id)
+    const book = await getBookByIdService(id)
 
-    if (!book) {
-      res.status(404).send('not found')
-      return
-    }
     res.json(book)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-const createBook = async (req, res) => {
+const createBook = async (req, res, next) => {
   try {
     const file = req.file
-    const newBook = await createBookService(req.body, file)
-    res.status(201).json(newBook)
+    const { title, description, authors, favorite } = req.body
+    await createBookService(title, description, authors, favorite, file)
+
+    res.json({ message: 'Book saved' })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-const updateBook = async (req, res) => {
+const updateBook = async (req, res, next) => {
   try {
     const file = req.file
+    const { title, description, authors, favorite } = req.body
     const { id } = req.params
-    const updatedBook = await updateBookInService(id, req.body, file)
+    await updateBookInService(id, title, description, authors, favorite, file)
 
-    if (!updatedBook) {
-      res.status(404).send('not found')
-      return
-    }
-
-    res.json(updatedBook)
+    res.status(200).json({ message: 'Book updated' })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-const deleteBook = (req, res) => {
+const deleteBook = async (req, res, next) => {
   try {
-    const deleted = deleteBookInService(req.params.id)
-
-    if (!deleted) {
-      res.status(404).send('not found')
-      return
-    }
+    await deleteBookInService(req.params.id)
 
     res.send('ok')
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 
-const downloadBookById = (req, res) => {
+const downloadBookById = async (req, res, next) => {
   try {
     const { id } = req.params
-    const file = downloadBookByIdService(id)
+    const file = await downloadBookByIdService(id)
+
     res.download(file)
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 

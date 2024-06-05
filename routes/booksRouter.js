@@ -15,8 +15,8 @@ const booksRouter = express.Router()
 booksRouter.get('/books', getAllBooks)
 booksRouter.get('/books/:id', getBookById)
 booksRouter.get('/books/:id/download', downloadBookById)
-booksRouter.post('/books', upload.single('document'), createBook)
-booksRouter.put('/books/:id', upload.single('document'), updateBook)
+booksRouter.post('/books', upload.single('file'), createBook)
+booksRouter.put('/books/:id', upload.single('file'), updateBook)
 booksRouter.delete('/books/:id', deleteBook)
 
 export { booksRouter }

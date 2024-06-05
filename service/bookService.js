@@ -1,76 +1,94 @@
-import books from '../models/booksModel.js'
-import uniqid from 'uniqid'
-import { unlink } from 'node:fs/promises'
-import path from 'node:path'
+import AppError from '../middlewares/AppError.js'
+import path from 'path'
+import { unlink, rename } from 'fs/promises'
+import Book from '../models/bookModel.js'
 
-const getAllBooks = () => {
+const getAllBooks = async () => {
+  const books = await Book.find().select('-__v -mimetype -fileName')
+  if (!books) {
+    throw new AppError('Books not found', 404)
+  }
   return books
 }
 
-const getBookById = id => {
-  return books.find(book => book.id === id)
-}
-
-const createBook = (bookData, file) => {
-  const newBook = { ...bookData, id: uniqid(), fileBook: file.filename }
-
-  books.push(newBook)
-  return newBook
-}
-
-const updateBook = async (id, updatedData, file) => {
-  const idx = books.findIndex(book => book.id === id)
-  const book = books.find(book => book.id === id)
-
-  if (idx === -1) {
-    console.error(`Book with ID ${id} not found.`)
-    return null
+const getBookById = async id => {
+  const book = await Book.findById(id).select('-__v -mimetype -fileName')
+  if (!book) {
+    throw new AppError('Book not found', 404)
   }
+  return book
+}
 
+const createBook = async (title, description, authors, favorite, file) => {
   try {
-    if (file && updatedData.fileName === book.fileName) {
-      const filePath = path.resolve('uploads', book.fileBook)
-      await unlink(filePath)
-      console.log(`Successfully updated ${filePath}`)
-      books[idx] = { ...books[idx], ...updatedData, fileBook: file.filename }
-    } else {
-      books[idx] = { ...books[idx], ...updatedData }
+    const newBook = new Book({
+      title,
+      description,
+      authors,
+      favorite,
+      mimetype: file.mimetype,
+      fileName: file.filename,
+      originalName: file.originalname
+    })
+    await newBook.save()
+    return true
+  } catch (error) {
+    if (file) {
+      await unlink(path.join('public/img', file.filename), err => {
+        if (err) console.error('Error deleting file:', err)
+      })
     }
-
-    return books[idx]
-  } catch (error) {
-    console.error('There was an error:', error.message)
-    return null
+    throw new AppError('Error creating book', 500)
   }
 }
 
-const deleteBook = async id => {
-  const idx = books.findIndex(book => book.id === id)
-  const book = books.find(book => book.id === id)
-  if (idx === -1) {
-    return null
+const updateBook = async (id, title, description, authors, favorite, file) => {
+  const book = await Book.findById(id).select('-__v -mimetype -fileName')
+  if (!book) {
+    throw new AppError('Book not found', 404)
   }
 
-  const filePath = path.resolve('uploads', book.fileBook)
-  try {
-    await unlink(filePath)
-    console.log(`Successfully deleted ${filePath}`)
-  } catch (error) {
-    console.error('There was an error:', error.message)
-  }
+  const filePath = path.resolve('public/img', book.fileName)
+  await unlink(filePath)
 
-  books.splice(idx, 1)
+  await Book.findByIdAndUpdate(id, {
+    title,
+    description,
+    authors,
+    favorite,
+    mimetype: file.mimetype,
+    fileName: file.filename,
+    originalName: file.originalname
+  })
+
   return true
 }
 
-const downloadBookById = id => {
-  const book = books.find(book => book.id === id)
-  if (book === undefined) {
-    throw new Error('book is not found')
+const deleteBook = async id => {
+  const book = await Book.findById(id).select('-__v -mimetype -fileName')
+  if (!book) {
+    throw new AppError('Book not found', 404)
   }
 
-  const filePath = path.resolve('uploads', book.fileBook)
-  return filePath
+  try {
+    const filePath = path.resolve('public/img', book.fileName)
+    await unlink(filePath)
+    await Book.deleteOne({ _id: id })
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new AppError('File not found', 404)
+    }
+  }
+}
+
+const downloadBook = async id => {
+  const book = await Book.findById(id).select('-__v')
+
+  if (!book) {
+    throw new AppError('Book not found', 404)
+  }
+
+  return `public/img/${book.fileName}`
 }
 
 export {
@@ -78,6 +96,6 @@ export {
   getBookById,
   createBook,
   updateBook,
-  deleteBook,
-  downloadBookById
+  downloadBook,
+  deleteBook
 }
