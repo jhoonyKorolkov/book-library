@@ -1,6 +1,5 @@
 import AppError from './AppError.js'
 
-// Middleware для обработки 404 ошибок
 const notFoundHandler = (req, res, next) => {
   const err = new AppError('Page Not Found', 404)
   next(err)

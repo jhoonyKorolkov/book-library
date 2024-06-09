@@ -1,6 +1,5 @@
 import multer from 'multer'
 import path from 'node:path'
-import uniqid from 'uniqid'
 import AppError from './AppError.js'
 
 const storage = multer.diskStorage({
@@ -9,7 +8,7 @@ const storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     const fileExtension = path.extname(file.originalname)
-    cb(null, file.fieldname + '-' + uniqid() + fileExtension)
+    cb(null, file.fieldname + '-' + Date.now() + fileExtension)
   }
 })
 

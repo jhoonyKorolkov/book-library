@@ -7,9 +7,10 @@ import {
   updateBook as updateBookInService
 } from '../service/books.js'
 
-const getAllBooks = (req, res, next) => {
+const getAllBooks = async (req, res, next) => {
   try {
-    const books = getAllBooksFromService()
+    const books = await getAllBooksFromService()
+    console.log(books)
     res.render('index', { books })
   } catch (error) {
     next(error)

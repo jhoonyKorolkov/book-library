@@ -5,6 +5,7 @@ import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import connectDB from './db.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,15 +16,22 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true })
 }
 const app = express()
-app.use(express.static('public'))
-app.set('view engine', 'ejs')
 
-app.use(express.urlencoded({ extended: true }))
-app.use(router)
+const startServer = async () => {
+  await connectDB()
 
-app.use(notFoundHandler)
-app.use(errorHandler)
+  app.use(express.static('public'))
+  app.set('view engine', 'ejs')
 
-app.listen(PORT, () => {
-  console.log(`Server is ready on port ${PORT}`)
-})
+  app.use(express.urlencoded({ extended: true }))
+  app.use(router)
+
+  app.use(notFoundHandler)
+  app.use(errorHandler)
+
+  app.listen(PORT, () => {
+    console.log(`App running on port ${PORT}`)
+  })
+}
+
+startServer()

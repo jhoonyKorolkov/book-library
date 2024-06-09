@@ -1,14 +1,18 @@
 import AppError from '../middlewares/AppError.js'
 import books from '../models/books.js'
-import uniqid from 'uniqid'
 import path from 'path'
 import { unlink } from 'fs/promises'
 import { BASE_URL } from '../config.js'
+import Book from '../models/books.js'
 
-const getAllBooks = () => {
+const getAllBooks = async () => {
+  const books = await Book.find().select('-__v -mimetype -fileName')
+  console.log(books)
+  if (!books) {
+    throw new AppError('Books not found', 404)
+  }
   return books
 }
-
 const getBookById = id => {
   const book = books.find(book => book.id === id)
   if (!book) {
@@ -20,7 +24,6 @@ const getBookById = id => {
 const createBook = (bookData, file) => {
   const newBook = {
     ...bookData,
-    id: uniqid(),
     fileName: file.filename,
     fullPath: `${BASE_URL}/img/${file.filename}`,
     path: file.path,
