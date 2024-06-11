@@ -7,7 +7,6 @@ import Book from '../models/books.js'
 
 const getAllBooks = async () => {
   const books = await Book.find().select('-__v -mimetype -fileName')
-  console.log(books)
   if (!books) {
     throw new AppError('Books not found', 404)
   }

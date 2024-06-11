@@ -1,7 +1,19 @@
 import express from 'express'
 
-import {getLogin} from '../controllers/auth.js'
+import {
+  getLogin,
+  getSignUp,
+  userSignIn,
+  userSignUp,
+  getProfile
+} from '../controllers/auth.js'
 
 const authRoutes = express.Router()
 
-authRoutes.get('/login', getLogin)
+authRoutes.get('/user/login', getLogin)
+authRoutes.get('/user/signup', getSignUp)
+authRoutes.get('/user/me', getProfile)
+authRoutes.post('/user/login', userSignIn)
+authRoutes.post('/user/signup', userSignUp)
+
+export default authRoutes

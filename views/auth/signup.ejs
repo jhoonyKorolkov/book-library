@@ -1,4 +1,21 @@
-<%- include('main/header', { title: 'Sign Up' }) %>
+<%- include('../main/header', { title: 'Sign Up' }) %>
 
+<form action="/user/signup" method="post">
+  <div>
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" name="password" id="password" required>
+  </div>
+  <div>
+    <label for="confirm-password">Confirm Password:</label>
+    <input type="password" name="confirm-password" id="confirm-password" required>
+  </div>
+  <div>
+    <button type="submit">Sign up</button>
+  </div>
+</form>
 
-<%- include('main/footer') %>
+<%- include('../main/footer') %>
