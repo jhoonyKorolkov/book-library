@@ -10,7 +10,6 @@ import {
 const getAllBooks = async (req, res, next) => {
   try {
     const books = await getAllBooksFromService()
-    console.log(books)
     res.render('index', { books })
   } catch (error) {
     next(error)

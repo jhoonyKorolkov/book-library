@@ -3,23 +3,22 @@ import { Strategy as LocalStrategy } from 'passport-local'
 import User from '../models/auth.js'
 
 passport.use(
-  new LocalStrategy(
-    async (username, password, done) => {
-      try {
-        const user = await User.findOne({ username })
-        console.log(user);
-        if (!user) {
-          return done(null, false, { message: 'Incorrect username.' })
-        }
-        if (!user.validPassword(password)) {
-          return done(null, false, { message: 'Incorrect password.' })
-        }
-        return done(null, user)
-      } catch (err) {
-        return done(err)
+  new LocalStrategy(async (username, password, done) => {
+    try {
+      const user = await User.findOne({ username })
+      if (!user) {
+        return done(null, false, {
+          message: 'Пользователя с таким именем не существует.'
+        })
       }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Не верный пароль.' })
+      }
+      return done(null, user)
+    } catch (err) {
+      return done(err)
     }
-  )
+  })
 )
 
 passport.serializeUser((user, done) => {
