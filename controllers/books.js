@@ -3,7 +3,7 @@ import {
   getBookById as getBookByIdService,
   createBook as createBookService,
   downloadBook as downloadBookService,
-  deleteBook as deleteBookService,
+  deleteBook as deleteBookInService,
   updateBook as updateBookInService
 } from '../service/books.js'
 
@@ -27,40 +27,40 @@ const getCreatFormBook = (req, res, next) => {
 const getUpdateFormBook = async (req, res, next) => {
   try {
     const { id } = req.params
-    const book = getBookByIdService(id)
+    const book = await getBookByIdService(id)
     res.render('edit', { book })
   } catch (error) {
     next(error)
   }
 }
 
-const getBookById = (req, res, next) => {
+const getBookById = async (req, res, next) => {
   try {
     const { id } = req.params
-    const book = getBookByIdService(id)
+    const book = await getBookByIdService(id)
     res.render('view', { book })
   } catch (error) {
     next(error)
   }
 }
 
-const createBook = (req, res, next) => {
+const createBook = async (req, res, next) => {
   try {
     const file = req.file
-    const data = req.body
-    createBookService(data, file)
+    const { title, description, authors, favorite } = req.body
+    await createBookService(title, description, authors, favorite, file)
     res.redirect('/')
   } catch (error) {
     next(error)
   }
 }
 
-const updateBook = (req, res, next) => {
+const updateBook = async (req, res, next) => {
   try {
     const file = req.file
-    const data = req.body
+    const { title, description, authors, favorite } = req.body
     const { id } = req.params
-    updateBookInService(id, data, file)
+    await updateBookInService(id, title, description, authors, favorite, file)
     res.redirect(`/books/${id}`)
   } catch (error) {
     next(error)
@@ -69,7 +69,9 @@ const updateBook = (req, res, next) => {
 
 const deleteBook = async (req, res, next) => {
   try {
-    await deleteBookService(req.params.id)
+    const { id } = req.params
+    await deleteBookInService(id)
+
     res.redirect('/')
   } catch (error) {
     next(error)
@@ -79,16 +81,12 @@ const deleteBook = async (req, res, next) => {
 const downloadBook = async (req, res, next) => {
   try {
     const { id } = req.params
-    const book = await downloadBookService(id)
-
-    const filePath = book.path
-    const fileName = book.originalName
-
-    res.download(filePath, fileName, error => {
+    const { filePath, originalName } = await downloadBookService(id)
+    res.download(filePath, originalName, error => {
       if (error) {
         next(error)
       } else {
-        console.log('File sent:', fileName)
+        console.log('File sent:', filePath)
       }
     })
   } catch (error) {

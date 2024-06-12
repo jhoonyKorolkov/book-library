@@ -1,4 +1,4 @@
-<%- include('../main/header', { title: 'Sign Up' }) %>
+<%- include('../main/header', { title: 'Регистрация' }) %>
 
 <style>
   .form-container {
@@ -78,20 +78,20 @@
 </style>
 
 <div class="form-container">
-  <h1>Sign Up</h1>
+  <h1>Регистрация</h1>
   <form action="/user/signup" method="post">
     <div>
-      <label for="username">Username:</label>
+      <label for="username">Имя пользователя:</label>
       <input type="text" name="username" id="username" required />
     </div>
     <div>
-      <label for="password">Password:</label>
+      <label for="password">Пароль:</label>
       <input type="password" name="password" id="password" required />
     </div>
     <div>
-      <button type="submit">Sign Up</button>
+      <button type="submit">Зарегистрироваться</button>
     </div>
-    <a class="signin-link" href="/user/login">Sign In</a>
+    <a class="signin-link" href="/user/login">Вход</a>
 
     <% if(success_msg && success_msg.length > 0) { %>
     <div class="alert alert-success" role="alert"><%= success_msg %></div>

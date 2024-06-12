@@ -20,7 +20,7 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).render('errors/error', {
     title:
-      statusCode === 500 ? 'Internal Server Error' : 'Something went wrong!',
+      statusCode === 500 ? 'Internal Server Error' : 'Что то пошло не так!',
     message: message
   })
 }

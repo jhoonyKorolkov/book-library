@@ -1,61 +1,62 @@
-<%- include('main/header', { title: 'Book List' }) %>
+<%- include('main/header', { title: 'Обновление книги' }) %>
 
-  <style>
-    .form-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      border: 1px solid #dee2e6;
-      border-radius: 0.25rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      background-color: #ffffff;
-    }
+<style>
+  .form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
 
-    .form-container h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+  .form-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 
-    .form-container img {
-      display: block;
-      margin: 20px auto;
-      max-width: 100%;
-      height: auto;
-      border-radius: 0.25rem;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
+  .form-container img {
+    display: block;
+    margin: 20px auto;
+    max-width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 
-    .form-container .btn {
-      margin: 10px 0;
-    }
-  </style>
+  .form-container .btn {
+    margin: 10px 0;
+  }
+</style>
 
-  <div class="container mt-5">
-    <div class="form-container">
-      <h1>Edit <%= book.title %>
-      </h1>
-      <form action="/books/edit/<%= book.id %>" method="post" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="title">Title:</label>
-          <input type="text" class="form-control" id="title" name="title" value="<%= book.title %>" required />
-        </div>
-        <div class="form-group">
-          <label for="author">Author:</label>
-          <input type="text" class="form-control" id="author" name="author" value="<%= book.author %>" required />
-        </div>
-        <div class="form-group">
-          <label for="description">Description:</label>
-          <textarea class="form-control" id="description" name="description" required><%= book.description %></textarea>
-        </div>
-        <img src="<%= book.fullPath %>" alt="<%= book.title %>">
-        <div class="form-group">
-          <label for="file">Update image:</label>
-          <input type="file" class="form-control-file" name="file" id="file" />
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Update Book</button>
-      </form>
-      <a class="btn btn-secondary btn-block" href="/">Back to list</a>
-    </div>
+<div class="container mt-5">
+  <div class="form-container">
+    <h1>Редактировать <%= book.title %></h1>
+    <form action="/books/edit/<%= book.id %>" method="post" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="title">Название:</label>
+        <input type="text" class="form-control" id="title" name="title" value="<%= book.title %>" required />
+      </div>
+      <div class="form-group">
+        <label for="authors">Авторы:</label>
+        <input type="text" class="form-control" id="authors" name="authors" value="<%= book.authors %>" required />
+      </div>
+      <div class="form-group">
+        <label for="description">Описание:</label>
+        <textarea class="form-control" id="description" name="description" required>
+<%= book.description %>
+        </textarea>
+      </div>
+      <img src="<%= book.fileCover %>" alt="<%= book.title %>" />
+      <div class="form-group">
+        <label for="file">Обновить изображение:</label>
+        <input type="file" class="form-control-file" name="file" id="file" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Обновить книгу</button>
+    </form>
+    <a class="btn btn-secondary btn-block" href="/">Назад к списку</a>
   </div>
+</div>
 
-  <%- include('main/footer') %>
+<%- include('main/footer') %>

@@ -1,4 +1,4 @@
-<%- include('main/header', { title: 'Book List' }) %>
+<%- include('main/header', { title: 'Список книг' }) %>
 
 <style>
   .book-list-container {
@@ -30,7 +30,7 @@
 </style>
 
 <div class="container mt-5 book-list-container">
-  <h1>Book List</h1>
+  <h1>Список книг</h1>
   <% if (books.length) { %>
   <ul class="list-group">
     <% books.forEach(book=> { %>
@@ -40,12 +40,12 @@
     <% }) %>
   </ul>
   <div class="btn-container">
-    <a class="btn btn-primary" href="/books/create">Add a new book</a>
+    <a class="btn btn-primary" href="/books/create">Добавить новую книгу</a>
   </div>
   <% } else { %>
-  <p class="text-center">No books available. Please add a new book.</p>
+  <p class="text-center">Нет доступных книг. Пожалуйста, добавьте новую книгу.</p>
   <div class="btn-container">
-    <a class="btn btn-primary" href="/books/create">Add a new book</a>
+    <a class="btn btn-primary" href="/books/create">Добавить новую книгу</a>
   </div>
   <% } %>
 </div>

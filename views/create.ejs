@@ -1,36 +1,40 @@
-<%- include('main/header', { title: 'Book List' }) %>
+<%- include('main/header', { title: 'Добавить новую книгу' }) %>
 
-<h1>Add a new book</h1>
+<h1>Добавить новую книгу</h1>
 <form action="/books/create" method="post" enctype="multipart/form-data">
   <div class="form-group">
-    <label for="title">Title:</label>
+    <label for="title">Название:</label>
     <input type="text" class="form-control" id="title" name="title" required />
   </div>
   <div class="form-group">
-    <label for="author">Author:</label>
+    <label for="authors">Авторы:</label>
     <input
       type="text"
       class="form-control"
-      id="author"
-      name="author"
+      id="authors"
+      name="authors"
       required
     />
   </div>
   <div class="form-group">
-    <label for="description">Description:</label>
+    <label for="description">Описание:</label>
     <textarea
       class="form-control"
       id="description"
       name="description"
-      requiredx
+      required
     ></textarea>
   </div>
   <div class="form-group">
-    <label for="description">Load image:</label>
-    <input type="file" name="file" id="file" />
+    <label for="favorite">Избранное:</label>
+    <input type="checkbox" id="favorite" name="favorite" />
   </div>
-  <button type="submit" class="btn btn-primary">Add Book</button>
+  <div class="form-group">
+    <label for="file">Загрузить изображение:</label>
+    <input type="file" class="form-control" id="file" name="file" required />
+  </div>
+  <button type="submit" class="btn btn-primary">Добавить книгу</button>
 </form>
-<a class="btn btn-secondary" href="/">Back to list</a>
+<a class="btn btn-secondary" href="/">Назад к списку</a>
 
 <%- include('main/footer') %>

@@ -21,7 +21,7 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true)
   } else {
-    cb(new AppError('Only images are allowed', 400))
+    cb(new AppError('Доступен формат jpeg, jpg, png, gif', 400))
   }
 }
 
