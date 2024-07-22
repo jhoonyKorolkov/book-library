@@ -2,9 +2,7 @@ import AppError from '../middlewares/AppError.js'
 import path from 'path'
 import { unlink, rename } from 'fs/promises'
 import Book from '../models/books.js'
-
 import { fileURLToPath } from 'url'
-import { isUndefined } from 'util'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
