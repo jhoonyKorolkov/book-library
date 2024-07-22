@@ -11,19 +11,19 @@ const app = express()
 const server = createServer(app)
 
 const startServer = async () => {
-  await connectDB()
+    await connectDB()
 
-  configureApp(app)
-  configureRoutes(app)
+    configureApp(app)
+    configureRoutes(app)
 
-  app.use(notFoundHandler)
-  app.use(errorHandler)
+    app.use(notFoundHandler)
+    app.use(errorHandler)
 
-  startSocketIo(server)
+    startSocketIo(server)
 
-  server.listen(PORT, () => {
-    console.log(`App running on port ${PORT}`)
-  })
+    server.listen(PORT, () => {
+        console.log(`App running on port ${PORT}`)
+    })
 }
 
 startServer()

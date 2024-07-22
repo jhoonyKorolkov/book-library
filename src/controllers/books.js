@@ -1,3 +1,4 @@
+// @ts-ignore
 import {
   getAllBooks as getAllBooksFromService,
   getBookById as getBookByIdService,
