@@ -12,6 +12,10 @@
     // "pretty": true,
     // "preserveConstEnums": true
   },
-  "include": ["src/**/*.ts", "src/controllers/books.js", "src/models/books.js"],
+  "include": [
+    "src/**/*.ts"
+    // "src/controllers/books.ts",
+    // "src/entity/BooksRepository.ts"
+  ],
   "exclude": ["node_modules", "dist"]
 }

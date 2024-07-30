@@ -7,41 +7,6 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-interface BookInterface {
-  title: string
-  description: string
-  authors: string
-  favorites: boolean
-  file: {
-    fileCover: string
-    fileName: string
-    mimeType: string
-    originalName: string
-  }
-}
-
-abstract class UserBook {
-  constructor(
-    public title: string,
-    public description: string,
-    public authors: string,
-    public favorites: boolean,
-    public file: {
-      fileCover: string
-      fileName: string
-      mimeType: string
-      originalName: string
-    }
-  ) {}
-
-  abstract getAllBooks(): string[]
-  abstract getBookById(): object
-  abstract createBook(): boolean
-  abstract updateBook(): void
-  abstract deleteBook(): void
-  abstract downLoadBook(): object
-}
-
 const getAllBooks = async () => {
   const books = await Book.find().select('-__v -mimetype')
   if (!books) {
