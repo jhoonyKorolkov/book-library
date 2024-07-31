@@ -10,7 +10,7 @@ import {
   getUpdateFormBook,
   downloadBook,
   deleteBook
-} from '../controllers/books.js'
+} from '../controllers/books'
 
 const bookRoutes = express.Router()
 

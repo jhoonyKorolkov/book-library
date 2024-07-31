@@ -1,9 +1,9 @@
 import session from 'express-session'
 import passport from './passport.js'
-import flash from 'connect-flash'
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
+import express from 'express'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -13,7 +13,7 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir, { recursive: true })
 }
 
-const configureApp = app => {
+const configureApp = (app: express.Express): void => {
   app.set('view engine', 'ejs')
   app.set('views', path.join(__dirname, '../views'))
 
@@ -30,11 +30,7 @@ const configureApp = app => {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  app.use(flash())
   app.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success_msg')
-    res.locals.error_msg = req.flash('error_msg')
-    res.locals.error = req.flash('error')
     res.locals.isAuthenticated = req.isAuthenticated()
     next()
   })

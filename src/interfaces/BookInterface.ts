@@ -1,4 +1,6 @@
-interface BookInterface {
+import { Document } from 'mongoose'
+
+interface BookInterface extends Document {
   title: string
   description: string
   authors: string

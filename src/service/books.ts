@@ -1,4 +1,4 @@
-import AppError from '../middlewares/AppError.js'
+import AppError from '../middlewares/AppError'
 import path from 'path'
 import { unlink, rename } from 'fs/promises'
 import Book from '../models/books.js'

@@ -1,7 +1,12 @@
+import { Request, Response, NextFunction } from 'express'
 import { registerUser, findUserByUsername } from '../service/auth.js'
 import passport from 'passport'
 
-const getLogin = async (req, res, next) => {
+const getLogin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     res.render('auth/login')
   } catch (error) {
@@ -9,7 +14,11 @@ const getLogin = async (req, res, next) => {
   }
 }
 
-const getSignUp = async (req, res, next) => {
+const getSignUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     res.render('auth/signup')
   } catch (error) {
@@ -17,7 +26,11 @@ const getSignUp = async (req, res, next) => {
   }
 }
 
-const getProfile = async (req, res, next) => {
+const getProfile = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   const { user } = req
   try {
     if (req.isAuthenticated()) {
@@ -30,12 +43,11 @@ const getProfile = async (req, res, next) => {
   }
 }
 
-const userLogout = (req, res, next) => {
+const userLogout = (req: Request, res: Response, next: NextFunction): void => {
   try {
     req.logout(function (err) {
       if (err) {
         console.error(err)
-        return req.flash('error_msg', 'Ошибка')
       }
       res.redirect('/')
     })
@@ -44,57 +56,58 @@ const userLogout = (req, res, next) => {
   }
 }
 
-const userSignIn = async (req, res, next) => {
+const userSignIn = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
-    passport.authenticate('local', (err, user, info) => {
-      if (err) {
-        return next(err)
-      }
-      if (!user) {
-        req.flash('error_msg', info.message)
-        return res.redirect('/user/login')
-      }
-      req.logIn(user, err => {
+    passport.authenticate(
+      'local',
+      (err: Error, user: Response, info: Response) => {
         if (err) {
           return next(err)
         }
-        req.flash('success_msg', 'Успешно авторезированы')
-        return res.redirect('/user/me')
-      })
-    })(req, res, next)
+        if (!user) {
+          return res.redirect('/user/login')
+        }
+        req.logIn(user, err => {
+          if (err) {
+            return next(err)
+          }
+          return res.redirect('/user/me')
+        })
+      }
+    )(req, res, next)
   } catch (error) {
     next(error)
   }
 }
 
-const userSignUp = async (req, res, next) => {
+const userSignUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const { username, password } = req.body
 
     if (!username || username.length < 3) {
-      req.flash(
-        'error_msg',
-        'Имя пользователя должно содержать не менее 3 символов'
-      )
       return res.redirect('/user/signup')
     }
     if (!password || password.length < 5) {
-      req.flash('error_msg', 'Пароль должен содержать не менее 5 символов')
       return res.redirect('/user/signup')
     }
 
     const existingUser = await findUserByUsername(username)
     if (existingUser) {
-      req.flash('error_msg', 'Имя пользователя уже занято')
       return res.redirect('/user/signup')
     }
 
     await registerUser(username, password)
-    req.flash('success_msg', 'Регистрация успешна!')
     res.redirect('/user/login')
-  } catch (error) {
+  } catch (error: any) {
     if (error.code === 11000) {
-      req.flash('error_msg', 'Имя пользователя уже занято')
       return res.redirect('/user/signup')
     }
     next(error)

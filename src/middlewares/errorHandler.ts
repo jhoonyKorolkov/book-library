@@ -1,11 +1,21 @@
+import { Request, Response, NextFunction } from 'express'
 import AppError from './AppError.js'
 
-const notFoundHandler = (req, res, next) => {
+const notFoundHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const err = new AppError('Page Not Found', 404)
   next(err)
 }
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (
+  err: AppError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): void => {
   const statusCode = err.statusCode || 500
   const message = err.message || 'Internal Server Error'
 
@@ -20,8 +30,9 @@ const errorHandler = (err, req, res, next) => {
 
   res.status(statusCode).render('errors/error', {
     title:
-      statusCode === 500 ? 'Internal Server Error' : 'Что то пошло не так!',
+      statusCode === 500 ? 'Internal Server Error' : 'Что-то пошло не так!',
     message: message
   })
 }
+
 export { notFoundHandler, errorHandler }

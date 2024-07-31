@@ -1,32 +1,43 @@
 import { Schema, model } from 'mongoose'
+import BookInterface from '../interfaces/BookInterface'
 
-const BookSchema = new Schema({
+const BookSchema = new Schema<BookInterface>({
   title: {
-    type: String
+    type: String,
+    required: true
   },
   description: {
-    type: String
+    type: String,
+    required: true
   },
   authors: {
-    type: String
+    type: String,
+    required: true
   },
-  favorite: {
-    type: String
+  favorites: {
+    type: Boolean,
+    default: false
   },
-  fileCover: {
-    type: String
-  },
-  fileName: {
-    type: String
-  },
-  mimetype: {
-    type: String
-  },
-  originalName: {
-    type: String
+  file: {
+    fileCover: {
+      type: String,
+      required: true
+    },
+    fileName: {
+      type: String,
+      required: true
+    },
+    mimeType: {
+      type: String,
+      required: true
+    },
+    originalName: {
+      type: String,
+      required: true
+    }
   }
 })
 
-const Book = model('Book', BookSchema)
+const Book = model<BookInterface>('Book', BookSchema)
 
 export default Book
