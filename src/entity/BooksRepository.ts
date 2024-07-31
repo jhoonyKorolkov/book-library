@@ -1,14 +1,21 @@
 import 'reflect-metadata'
-import { injectable, inject } from 'inversify'
+import { injectable } from 'inversify'
+import Book from '../models/books'
 
 @injectable()
 class BookRepository {
   id: string
-  constructor(id: string) {
-    id: this.id
+  books: Array<{ name: string; id: string }>
+
+  constructor() {
+    this.books = [
+      { name: 'hello', id: '1' },
+      { name: 'hi', id: '2' }
+    ]
   }
-  getBookById(id: string): string {
-    return id
+
+  async getBookById(id: string): Promise<object | undefined> {
+    return await Book.findById(id).select('-__v -mimetype')
   }
 }
 

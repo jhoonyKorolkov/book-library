@@ -30,6 +30,7 @@
     "typescript": "^5.6.0-dev.20240710"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "nodemon": "^3.1.0"
   }
 }

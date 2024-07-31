@@ -1,4 +1,5 @@
 import express from 'express'
+import { Express } from 'express'
 import { createServer } from 'http'
 import { PORT } from './config/config.js'
 import connectDB from './db.js'
@@ -7,7 +8,7 @@ import configureApp from './config/configureApp.js'
 import configureRoutes from './config/configureRoutes.js'
 import { errorHandler, notFoundHandler } from './middlewares/errorHandler.js'
 
-const app = express()
+const app: Express = express()
 const server = createServer(app)
 
 const startServer = async () => {

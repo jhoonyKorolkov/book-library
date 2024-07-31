@@ -1,4 +1,3 @@
-import express from 'express'
 import session from 'express-session'
 import passport from './passport.js'
 import flash from 'connect-flash'
@@ -30,7 +29,7 @@ const configureApp = app => {
   )
   app.use(passport.initialize())
   app.use(passport.session())
-  
+
   app.use(flash())
   app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg')

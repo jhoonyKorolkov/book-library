@@ -33,25 +33,43 @@ var __runInitializers = (this && this.__runInitializers) || function (thisArg, i
     }
     return useValue ? value : void 0;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __setFunctionName = (this && this.__setFunctionName) || function (f, name, prefix) {
     if (typeof name === "symbol") name = name.description ? "[".concat(name.description, "]") : "";
     return Object.defineProperty(f, "name", { configurable: true, value: prefix ? "".concat(prefix, " ", name) : name });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookRepository = void 0;
 require("reflect-metadata");
 const inversify_1 = require("inversify");
+const books_1 = __importDefault(require("../models/books"));
 let BookRepository = (() => {
     let _classDecorators = [(0, inversify_1.injectable)()];
     let _classDescriptor;
     let _classExtraInitializers = [];
     let _classThis;
     var BookRepository = _classThis = class {
-        constructor(id) {
-            id: this.id;
+        constructor() {
+            this.books = [
+                { name: 'hello', id: '1' },
+                { name: 'hi', id: '2' }
+            ];
         }
         getBookById(id) {
-            return id;
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield books_1.default.findById(id).select('-__v -mimetype');
+            });
         }
     };
     __setFunctionName(_classThis, "BookRepository");
