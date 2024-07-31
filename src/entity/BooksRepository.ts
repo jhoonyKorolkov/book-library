@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { injectable } from 'inversify'
 import Book from '../models/books'
-import BookInterface from './BookInterface'
+import BookInterface from '../interfaces/BookInterface'
 
 @injectable()
 class BookRepository {
